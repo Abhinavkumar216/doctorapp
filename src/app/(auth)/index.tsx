@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
     fontFamily: "NunitoRegular",
     fontSize: 16,
     lineHeight: 26,
-    color: Colors.light.text600,
+    color: "374151",
   },
   button: {
     backgroundColor: "#1C2A3A",
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
   buttonText: {
     fontFamily: "NunitoMedium",
     fontSize: 16,
-    color: Colors.light.text100,
+    color: Colors.light.white
   },
   indicator: {
     flexDirection: "row",

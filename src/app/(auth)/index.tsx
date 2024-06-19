@@ -21,6 +21,7 @@ import Animated, {
   FadeInLeft,
 } from "react-native-reanimated";
 import { OnboardingItem, Onboardingdata } from "@assets/Data/Onboardingdata";
+import { Link, router } from "expo-router";
 
 const { width } = Dimensions.get("window");
 const IMG_HEIGHT = 500;
@@ -58,7 +59,9 @@ const OnboardingScreen = () => {
         onViewableItemsChanged={onViewRef.current}
         showsHorizontalScrollIndicator={false}
         horizontal
-        renderItem={({ item, index }) => <Card data={item} index={index} />}
+        renderItem={({ item, index }) => (
+          <Card data={item} index={index} scrollToIndex={scrollToIndex} />
+        )}
         keyExtractor={(item) => item.id}
       />
       <View style={styles.indicator}>
@@ -82,7 +85,9 @@ const OnboardingScreen = () => {
         })}
       </View>
       <View style={{ marginTop: 25 }}>
-        <Text style={styles.subHeading}>Skip</Text>
+        <Link href={"/signin"} replace asChild>
+          <Text style={styles.subHeading}>Skip</Text>
+        </Link>
       </View>
     </View>
   );
@@ -91,16 +96,28 @@ const OnboardingScreen = () => {
 type DataProps = {
   data: OnboardingItem;
   index: number;
+  scrollToIndex: (index: number) => void;
 };
 
-const Card = ({ data, index }: DataProps) => {
+const Card = ({ data, index, scrollToIndex }: DataProps) => {
+  const onPress = () => {
+    if (index == 2) {
+      router.replace("/signin");
+    } else {
+      scrollToIndex(index + 1);
+    }
+  };
   return (
     <View>
       <Image source={data.Image} style={styles.image} />
       <View style={styles.bottomContainer}>
-        <Animated.Text entering={FadeInLeft} style={styles.heading}>{data.title}</Animated.Text>
-        <Animated.Text entering={FadeInLeft} style={styles.subHeading}>{data.subtitle}</Animated.Text>
-        <TouchableOpacity style={styles.button}>
+        <Animated.Text entering={FadeInLeft} style={styles.heading}>
+          {data.title}
+        </Animated.Text>
+        <Animated.Text entering={FadeInLeft} style={styles.subHeading}>
+          {data.subtitle}
+        </Animated.Text>
+        <TouchableOpacity style={styles.button} onPress={onPress}>
           <Text style={styles.buttonText}>{index == 2 ? "Done" : "Next"}</Text>
         </TouchableOpacity>
       </View>
